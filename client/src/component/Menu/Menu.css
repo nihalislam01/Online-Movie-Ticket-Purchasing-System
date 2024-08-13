@@ -1,0 +1,13 @@
+li {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+li a {
+    color: #737373;
+    text-decoration: none;
+}
+
+.selected {
+    color: rgb(44, 124, 115);
+}

@@ -98,7 +98,7 @@ function Signup() {
                         <button type="submit" className="btn btn-success mt-2">Sign Up</button>
                     </form>
                     <div className={`d-flex justify-content-center mt-4`}>
-                        <p >Already signed up? <Link to={`/`} className={`fw-bold`}>Log In</Link></p>
+                        <p >Already signed up? <Link to={`/login`} className={`fw-bold`}>Log In</Link></p>
                     </div>
                 </div>
             </div>

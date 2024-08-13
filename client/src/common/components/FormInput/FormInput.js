@@ -8,6 +8,7 @@ function FormInput(props) {
                    name={props.name}
                    type={props.type}
                    placeholder={props.placeholder}
+                   checked={props.checked}
                    onChange={props.onChange}/>
         </div>
     );

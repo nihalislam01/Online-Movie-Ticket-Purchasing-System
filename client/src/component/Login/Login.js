@@ -50,7 +50,7 @@ function Login() {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("role", response.data.role);
             localStorage.setItem("id", response.data.id);
-            toast.success("Login successful");
+            window.location.href = "/";
         }).catch((error)=>{
             try {
                 toast.error(error.response.data.error);
