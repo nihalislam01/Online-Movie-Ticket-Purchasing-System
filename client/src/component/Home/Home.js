@@ -98,7 +98,7 @@ function Home(props) {
         }).then(response=>{
             window.location.href = "/wishlist";
         }).catch(error=>{
-            if (error.status===401) {
+            if (error.response.status===403) {
                 window.location.href = "/login";
             } else {
                 toast.error(errorMessage);

@@ -39,3 +39,14 @@ create table wishlist(
     foreign key (movie_id) references movie(movie_id)
 
 );
+
+create table review(
+    review_id int primary key AUTO_INCREMENT,
+    report varchar(500),
+    rate int not null,
+    user_id int not null,
+    movie_id int not null,
+    foreign key (user_id) references user(user_id),
+    foreign key (movie_id) references movie(movie_id)
+
+);

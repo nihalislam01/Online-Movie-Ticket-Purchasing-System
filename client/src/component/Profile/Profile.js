@@ -4,6 +4,7 @@ import { toast, Toaster } from "react-hot-toast";
 import FormInput from "../../common/components/FormInput/FormInput";
 import CommonHelmet from "../../common/components/Head/CommonHelmet";
 import { errorMessage, serverLocation } from "../../const/Constants";
+import Review from "../Review/Review";
 
 const pageTitle = "Profile";
 const getUserUrl = `${serverLocation}/user/get-user/`;
@@ -164,6 +165,11 @@ function Profile() {
                         <button className="btn btn-secondary form-control" onClick={() => setOpenPassword(false)}>Close</button>
                         </>}
                         {!openPassword && !openUpdate && <button className="btn btn-secondary form-control" onClick={() => setOpenPassword(true)}>Change Password</button>}
+                        {!openUpdate && !openPassword && <>
+                            <h4 className="mt-4">My Reviews</h4>
+                            <hr />
+                            <Review isMovie={false} id={id} />
+                        </>}
                     </div>
                 </div>
             </div>

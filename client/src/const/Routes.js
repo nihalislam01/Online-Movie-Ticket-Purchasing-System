@@ -2,6 +2,7 @@ import React from "react";
 import Dashboard from "../component/Dashboard/Dashboard";
 import Login from "../component/Login/Login";
 import MovieForm from "../component/Movie/MovieForm";
+import ReviewForm from "../component/Review/ReviewForm";
 import Signup from "../component/Signup/Signup";
 
 export const routes = [
@@ -28,6 +29,10 @@ export const routes = [
     {
         path: "/add-movie",
         element: <MovieForm />
+    },
+    {
+        path: "/review/:id",
+        element: <ReviewForm />
     },
     {
         path: "/login",
