@@ -92,6 +92,40 @@ router.patch("/update-user", authenticated.authenticated, (req, res)=>{
             //sendNotification("Your have just updated your profile.", user.id);
             return res.sendStatus(200);
         } else {
+            if(err.code==="ER_DUP_ENTRY") {
+                return res.status(400).json({error: "Try a different username"});
+            } else {
+                return res.status(500).json(err);
+            }
+        }
+    })
+})
+
+router.patch("/change-password", authenticated.authenticated, (req, res)=>{
+    const user = req.body;
+    var query = "select password from user where user_id=?";
+    connection.query(query,[user.id],(err, results)=>{
+        if(!err) {
+            const bcrypt = require('bcrypt');
+            bcrypt.compare(user.old_password, results[0].password, (err, result) => {
+                if(!err) {
+                    if(result) {
+                        query = "update user set password=? where user_id=?";
+                        connection.query(query, [encoder(user.new_password), user.id], (err, results)=>{
+                            if(!err) {
+                                return res.status(200).json("Password Changed");
+                            } else {
+                                return res.status(500).json(err);
+                            }
+                        })
+                    } else {
+                        return res.status(400).json({error: "Old Password did not match"});
+                    }
+                } else {
+                    return res.status(500).json(err);
+                }
+            })
+        } else {
             return res.status(500).json(err);
         }
     })

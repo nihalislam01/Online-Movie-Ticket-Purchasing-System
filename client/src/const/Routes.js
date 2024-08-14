@@ -10,6 +10,10 @@ export const routes = [
         element: <Dashboard currentPage={1} />
     },
     {
+        path: "/profile",
+        element: <Dashboard currentPage={2} />
+    },
+    {
         path: "/movie",
         element: <Dashboard currentPage={3} />
     },

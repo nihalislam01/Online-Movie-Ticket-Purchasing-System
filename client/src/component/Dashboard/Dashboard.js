@@ -4,6 +4,7 @@ import Home from "../Home/Home";
 import Menu, { Page } from "../Menu/Menu";
 import Details from "../Movie/Details";
 import Movie from "../Movie/Movie";
+import Profile from "../Profile/Profile";
 
 function Dashboard(props) {
 
@@ -31,6 +32,7 @@ function Dashboard(props) {
                     </div>
                 </div>
                 {props.currentPage === Page.home && <Home />}
+                {props.currentPage === Page.profile && <Profile />}
                 {props.currentPage === Page.movie && <Movie />}
                 {props.currentPage === Page.details && <Details />}
             </section>
