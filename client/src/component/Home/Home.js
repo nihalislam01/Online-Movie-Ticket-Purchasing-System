@@ -6,9 +6,16 @@ import CommonHelmet from "../../common/components/Head/CommonHelmet";
 import { errorMessage, serverLocation } from "../../const/Constants";
 
 const getMovieUrl = `${serverLocation}/movie/get-movie?search=`;
-const pageTitle = "Home";
+const getMovieForWishlistUrl = `${serverLocation}/movie/get-wishlist/`;
+const addMovieForWishlistUrl = `${serverLocation}/movie/add-to-wishlist`;
+const removeMovieForWishlistUrl = `${serverLocation}/movie/remove-wishlist/`;
+const homeTitle = "Home";
+const wishlistTitle = "Wishlist";
 
-function Home() {
+function Home(props) {
+
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
 
     const [movies, setMovies] = useState([]);
     const [search, setSearch] = useState('');
@@ -22,11 +29,33 @@ function Home() {
         })
     }
 
-    useEffect(()=>{
-        getMovie(search);
-    },[search])
+    const getMovieForWishlist = (search, id, token) => {
+        axios.get(getMovieForWishlistUrl + id + "?search=" + search, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then(response => {
+            setMovies(response.data);
+        }).catch(error => {
+            if (error.response.status===403) {
+                window.location.href = "/login";
+            } else {
+                toast.error(errorMessage);
+                console.log(error)
+            }
+        })
+    }
 
-    function handleSearchChange(event) {
+    useEffect(()=>{
+        if (props.isHome) {
+            getMovie(search);
+        } else {
+            getMovieForWishlist(search, id, token);
+        }
+    },[props.isHome, search, id, token])
+
+    const  handleSearchChange = (event) => {
         setSearch(event.target.value)
         axios.get(getMovieUrl + event.target.value)
             .then((response) => {
@@ -38,9 +67,50 @@ function Home() {
             })
     }
 
+    const addToWishlist = (movie_id) => {
+        const wishlist = {
+            user_id: id,
+            movie_id: movie_id
+        }
+        axios.post(addMovieForWishlistUrl, wishlist, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then(response=>{
+            window.location.href = "/wishlist";
+        }).catch(error=>{
+            if (error.response.status===403) {
+                window.location.href = "/login";
+            } else {
+                toast.error(errorMessage);
+                console.log(error)
+            }
+        })
+    }
+
+    const removeWishlist = (movie_id) => {
+        axios.delete(removeMovieForWishlistUrl + id + '/' + movie_id, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then(response=>{
+            window.location.href = "/wishlist";
+        }).catch(error=>{
+            if (error.status===401) {
+                window.location.href = "/login";
+            } else {
+                toast.error(errorMessage);
+                console.log(error)
+            }
+        })
+    }
+
     return (
         <>
-            <CommonHelmet title={pageTitle} />
+            {props.isHome && <CommonHelmet title={homeTitle} />}
+            {!props.isHome && <CommonHelmet title={wishlistTitle} />}
             <Toaster />
             <div className="container pt-4">
                 <input type="text" placeholder="search for Movies" className="form-control text-center bg-light" value={search} onChange={handleSearchChange} />
@@ -51,7 +121,8 @@ function Home() {
                                 <div className="col-12 col-md-2 m-1 text-center p-2" key={movie.movie_id} style={{ backgroundColor: "#e2eafc", borderRadius: "10px" }}>
                                     <Link to={`/details/${movie.movie_id}`}><img src={movie.image_url} alt={movie.name} className="mt-4"/></Link>
                                     <p>{movie.name}</p>
-                                    <button className="btn btn-outline-warning form-control mb-2">Add To Wishlist</button>
+                                    {props.isHome && <button className="btn btn-outline-warning form-control mb-2" onClick={()=>addToWishlist(movie.movie_id)}>Add To Wishlist</button>}
+                                    {!props.isHome && <button className="btn btn-outline-warning form-control mb-2" onClick={()=>removeWishlist(movie.movie_id)}>Remove From Wishlist</button>}
                                     <button className="btn btn-warning form-control mb-2">Buy Ticket</button>
                                 </div>
                             )

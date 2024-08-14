@@ -24,23 +24,24 @@ function Menu(props) {
                     <Link to="/" className={`${props.currentPage === Page.home && (`selected`)}`}>Home</Link>
                 </li>
                 {!props.isAdmin && props.isAuthorized && <>                    
-                    <li className={`d-flex align-items-center mx-2`}>
-                        <Link to="/profile" className={`${props.currentPage === Page.profile && (`selected`)}`}>Profile</Link>
-                    </li>
-
-                    <li className={`d-flex align-items-center mx-2`}>
-                        <Link onClick={doSignOut}>Sign Out</Link>
-                    </li>
                 </>}
                 {props.isAdmin && props.isAuthorized && <>
                     <li className={`d-flex align-items-center mx-2`}>
                         <Link to="/movie" className={`${props.currentPage === Page.movie && (`selected`)}`}>Movie</Link>
                     </li>
-
+                </>}
+                {props.isAuthorized && <>
+                    <li className={`d-flex align-items-center mx-2`}>
+                        <Link to="/wishlist" className={`${props.currentPage === Page.wishlist && (`selected`)}`}>Wishlist</Link>
+                    </li>
+                    <li className={`d-flex align-items-center mx-2`}>
+                        <Link to="/profile" className={`${props.currentPage === Page.profile && (`selected`)}`}>Profile</Link>
+                    </li>
                     <li className={`d-flex align-items-center mx-2`}>
                         <Link onClick={doSignOut}>Sign Out</Link>
                     </li>
-                </>}
+                    </>
+                }
                 {!props.isAuthorized && <>
                     <li className={`d-flex align-items-center mx-2`}>
                         <Link to="/login">Log In</Link>
@@ -59,7 +60,8 @@ export const Page = {
     home: 1,
     profile: 2,
     movie: 3,
-    details: 4
+    details: 4,
+    wishlist: 5
 };
 
 export default Menu;

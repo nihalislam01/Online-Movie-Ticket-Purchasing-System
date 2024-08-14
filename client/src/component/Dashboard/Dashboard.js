@@ -31,7 +31,8 @@ function Dashboard(props) {
                         <Menu currentPage={props.currentPage} isAuthorized={isAuthorized} isAdmin={isAdmin} />
                     </div>
                 </div>
-                {props.currentPage === Page.home && <Home />}
+                {props.currentPage === Page.home && <Home isHome={true}/>}
+                {props.currentPage === Page.wishlist && <Home isHome={false}/>}
                 {props.currentPage === Page.profile && <Profile />}
                 {props.currentPage === Page.movie && <Movie />}
                 {props.currentPage === Page.details && <Details />}

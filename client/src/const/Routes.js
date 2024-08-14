@@ -22,6 +22,10 @@ export const routes = [
         element: <Dashboard currentPage={4} />
     },
     {
+        path: "/wishlist",
+        element: <Dashboard currentPage={5} />
+    },
+    {
         path: "/add-movie",
         element: <MovieForm />
     },
