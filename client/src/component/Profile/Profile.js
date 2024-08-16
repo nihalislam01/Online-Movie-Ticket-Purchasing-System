@@ -7,9 +7,9 @@ import { errorMessage, serverLocation } from "../../const/Constants";
 import Review from "../Review/Review";
 
 const pageTitle = "Profile";
-const getUserUrl = `${serverLocation}/user/get-user/`;
+const getUserUrl = `${serverLocation}/user/get/`;
 const changePasswordUrl = `${serverLocation}/user/change-password`;
-const updateUserUrl = `${serverLocation}/user/update-user`;
+const updateUserUrl = `${serverLocation}/user/update`;
 
 const passwordInputs = [
     {

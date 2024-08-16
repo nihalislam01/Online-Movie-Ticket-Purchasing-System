@@ -50,3 +50,11 @@ create table review(
     foreign key (movie_id) references movie(movie_id)
 
 );
+
+create table notification(
+    notification_id int primary key AUTO_INCREMENT,
+    report varchar(500),
+    date date not null,
+    user_id int not null,
+    foreign key (user_id) references user(user_id)
+);

@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import CommonHelmet from "../../common/components/Head/CommonHelmet";
 import { errorMessage, serverLocation } from "../../const/Constants";
 
-const getMovieUrl = `${serverLocation}/movie/get-movie?search=`;
-const getMovieForWishlistUrl = `${serverLocation}/movie/get-wishlist/`;
-const addMovieForWishlistUrl = `${serverLocation}/movie/add-to-wishlist`;
-const removeMovieForWishlistUrl = `${serverLocation}/movie/remove-wishlist/`;
+const getMovieUrl = `${serverLocation}/movie/get?search=`;
+const getMovieForWishlistUrl = `${serverLocation}/wishlist/get/`;
+const addMovieForWishlistUrl = `${serverLocation}/wishlist/add`;
+const removeMovieForWishlistUrl = `${serverLocation}/wishlist/delete/`;
 const homeTitle = "Home";
 const wishlistTitle = "Wishlist";
 

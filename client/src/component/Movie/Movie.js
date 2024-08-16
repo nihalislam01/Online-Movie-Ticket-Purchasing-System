@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 import CommonHelmet from "../../common/components/Head/CommonHelmet";
 import { errorMessage, serverLocation } from "../../const/Constants";
 
 const pageTitle = "Movie";
-const getMovieUrl = `${serverLocation}/movie/get-all-movie`;
+const getMovieUrl = `${serverLocation}/movie/get-all`;
+const deleteMovieUrl = `${serverLocation}/movie/delete/`;
 
 function Movie() {
 
@@ -34,6 +36,20 @@ function Movie() {
         window.location.href = "/add-movie";
     }
 
+    const deleteMovie = (id) => {
+        axios.delete(deleteMovieUrl+id, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then(response=>{
+            toast.success(response.data);
+        }).catch(error=>{
+            toast.error(errorMessage);
+            console.log(error);
+        })
+    }
+
     return(
         <>
             <CommonHelmet title={pageTitle}/>
@@ -54,6 +70,7 @@ function Movie() {
                             <th>Release Date</th>
                             <th>Genre</th>
                             <th>Availability</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,9 +78,13 @@ function Movie() {
                             <tr key={index}>
                                 <td>{movie.movie_id}</td>
                                 <td>{movie.name}</td>
-                                <td>{movie.release_date}</td>
+                                <td>{movie.release_date.substring(0, 10)}</td>
                                 <td>{movie.genre}</td>
                                 <td>{movie.is_available}</td>
+                                <td className="text-end">
+                                    <Link to={`/update-movie/${movie.movie_id}`}><button className="btn btn-outline-primary mx-2">Edit</button></Link>
+                                    <button className="btn btn-outline-danger mx-2" onClick={() => deleteMovie(movie.movie_id)}>Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

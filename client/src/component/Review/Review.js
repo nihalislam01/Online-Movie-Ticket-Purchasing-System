@@ -65,7 +65,7 @@ function Review(props) {
         <>
             {reviews.map((review, index)=> (
                 <div key={index} className="my-4">
-                    <div className="review-header">
+                    <div className={`review-header ${review.report !== null && (`not-rounded`)}`}>
                         {isMovie && <h5 className="m-0">{review.username}</h5>}
                         {!isMovie && <h5 className="m-0">{review.name}</h5>}
                         <div>
@@ -75,9 +75,11 @@ function Review(props) {
                             {!isMovie && <button className="btn btn-danger mx-2" onClick={()=>deleteReview(review.review_id)}>Delete</button>}
                         </div>
                     </div>
-                    <div className="review-body container">
-                        <p>{review.report}</p>
-                    </div>
+                    {review.report !== null && 
+                        <div className="review-body container">
+                            <p>{review.report}</p>
+                        </div>
+                    }
                 </div>
             ))}
         </>

@@ -27,8 +27,16 @@ export const routes = [
         element: <Dashboard currentPage={5} />
     },
     {
+        path: "/notification",
+        element: <Dashboard currentPage={6} />
+    },
+    {
         path: "/add-movie",
-        element: <MovieForm />
+        element: <MovieForm isAdd={true}/>
+    },
+    {
+        path: "/update-movie/:movie_id",
+        element: <MovieForm isAdd={false}/>
     },
     {
         path: "/review/:id",

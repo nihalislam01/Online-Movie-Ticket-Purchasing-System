@@ -2,7 +2,7 @@ const express = require('express');
 const connection = require('../connection');
 const authenticated = require('../service/authentication');
 const router = express.Router();
-//const sendNotification = require('../service/notification');
+const sendNotification = require('../service/notification');
 require('dotenv').config();
 
 router.post('/add', authenticated.authenticated, (req, res) =>{
@@ -20,7 +20,9 @@ router.post('/add', authenticated.authenticated, (req, res) =>{
                 query = "insert into review(report, rate, user_id, movie_id) values(?,?,?,?)";
                 connection.query(query,[report, review.rate, review.user_id, review.movie_id],(err, results)=>{
                     if(!err) {
-                        return res.status(200).json("Review added");
+                        const message = "You have just reviewed a movie"
+                        sendNotification(message, review.user_id);
+                        return res.status(200).json(message);
                     } else {
                         return res.status(500).json(err);
                     }

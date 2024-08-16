@@ -2,11 +2,14 @@
     border: solid 1px rgb(165, 165, 165);
     border-radius: 5px;
     padding: 10px 20px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
     background-color: #f6f6f6;
     display: flex;
     justify-content: space-between;
+  }
+
+  .not-rounded {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
   
   .review-body {

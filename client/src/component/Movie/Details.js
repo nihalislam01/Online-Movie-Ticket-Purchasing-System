@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { errorMessage, serverLocation } from "../../const/Constants";
 import Review from "../Review/Review";
 
-const movieUrl = `${serverLocation}/movie/get-movie/`;
+const movieUrl = `${serverLocation}/movie/get/`;
 const analyticsUrl = `${serverLocation}/review/get-analytics/`;
 
 function Details() {
@@ -17,7 +17,10 @@ function Details() {
 
     const getMovie = (id) => {
         axios.get(movieUrl+id).then(response=>{
-            setMovie(response.data)
+            setMovie(response.data);
+        }).catch(error=>{
+            toast.error(errorMessage);
+            console.log(error);
         })
     }
 

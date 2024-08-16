@@ -4,7 +4,7 @@ const encoder = require('../service/encode');
 const authenticated = require('../service/authentication');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-//const sendNotification = require('../service/notification');
+const sendNotification = require('../service/notification');
 require('dotenv').config();
 
 router.post('/register', (req, res) => {
@@ -19,7 +19,7 @@ router.post('/register', (req, res) => {
                         query = "select user_id from user where username=?";
                         connection.query(query,[user.username],(err, results)=>{
                             if(!err){
-                                //sendNotification('Welcome to Online Movie Ticket Purchasing System', results[0].user_id)
+                                sendNotification('Welcome to Online Movie Ticket Purchasing System', results[0].user_id);
                                 return res.status(200).json("user signup successful");
                             } else {
                                 return res.status(500).json(err);
@@ -72,7 +72,7 @@ router.post('/authenticate', (req, res) => {
     })
 })
 
-router.get("/get-user/:id", authenticated.authenticated, (req, res)=>{
+router.get("/get/:id", authenticated.authenticated, (req, res)=>{
     const id = req.params.id;
     var query = "select user_id, name, username from user where user_id=?";
     connection.query(query,[id],(err,results)=>{
@@ -84,13 +84,14 @@ router.get("/get-user/:id", authenticated.authenticated, (req, res)=>{
     })
 })
 
-router.patch("/update-user", authenticated.authenticated, (req, res)=>{
+router.patch("/update", authenticated.authenticated, (req, res)=>{
     const user = req.body;
     var query = "update user set name=?, username=? where user_id=?";
     connection.query(query,[user.name, user.username, user.id],(err, results)=>{
         if(!err) {
-            //sendNotification("Your have just updated your profile.", user.id);
-            return res.sendStatus(200);
+            const message = "Your have just updated your profile";
+            sendNotification(message, user.id);
+            return res.status(200).json(message);
         } else {
             if(err.code==="ER_DUP_ENTRY") {
                 return res.status(400).json({error: "Try a different username"});
@@ -113,7 +114,9 @@ router.patch("/change-password", authenticated.authenticated, (req, res)=>{
                         query = "update user set password=? where user_id=?";
                         connection.query(query, [encoder(user.new_password), user.id], (err, results)=>{
                             if(!err) {
-                                return res.status(200).json("Password Changed");
+                                const message = "You have just changed your password";
+                                sendNotification(message, user.id);
+                                return res.status(200).json(message);
                             } else {
                                 return res.status(500).json(err);
                             }
@@ -129,10 +132,6 @@ router.patch("/change-password", authenticated.authenticated, (req, res)=>{
             return res.status(500).json(err);
         }
     })
-})
-
-router.get('/home', authenticated.authenticated, (req, res) => {
-    return res.status(200).json("Welcome");
 })
 
 module.exports = router;

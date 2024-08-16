@@ -1,4 +1,5 @@
 function FormInput(props) {
+
     return (
         <div className="mb-3">
             { props.label && <label htmlFor={props.id} className="form-label">{props.label}</label> }
@@ -9,6 +10,7 @@ function FormInput(props) {
                    type={props.type}
                    placeholder={props.placeholder}
                    checked={props.checked}
+                   value={props.value}
                    onChange={props.onChange}/>
         </div>
     );
