@@ -1,0 +1,18 @@
+.choice {
+    margin: 5px;
+    border: 1px solid #ade8f4;
+    border-radius: 5px;
+    background-color: #edf2fb;
+    padding: 10px;
+    text-align: center;
+}
+
+.choice:hover {
+    cursor: pointer;
+}
+
+.choice-selected {
+    color: white;
+    border: 1px solid #147eff;
+    background-color: #97bcff;
+}

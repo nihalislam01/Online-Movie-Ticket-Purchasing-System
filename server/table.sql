@@ -58,3 +58,30 @@ create table notification(
     user_id int not null,
     foreign key (user_id) references user(user_id)
 );
+
+create table schedule(
+    schedule_id int primary key AUTO_INCREMENT,
+    hall varchar(50),
+    branch varchar(50),
+    date date,
+    time varchar(10),
+    admin_user_id int not null,
+    movie_id int not null,
+    foreign key (admin_user_id) references user(user_id),
+    foreign key (movie_id) references movie(movie_id)
+);
+
+create table ticket(
+    ticket_id int primary key AUTO_INCREMENT,
+    seat_no varchar(5),
+    is_sold boolean,
+    date date,
+    type varchar(20),
+    price int,
+    user_id int,
+    schedule_id int not null,
+    movie_id int,
+    foreign key (user_id) references user(user_id),
+    foreign key (schedule_id) references schedule(schedule_id),
+    foreign key (movie_id) references movie(movie_id)
+);

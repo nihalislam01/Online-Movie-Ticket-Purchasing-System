@@ -65,7 +65,9 @@ export const Page = {
     movie: 3,
     details: 4,
     wishlist: 5,
-    notification: 6
+    notification: 6,
+    ticket: 7,
+    buy: 8
 };
 
 export default Menu;

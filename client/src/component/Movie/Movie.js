@@ -83,6 +83,7 @@ function Movie() {
                                 <td>{movie.is_available}</td>
                                 <td className="text-end">
                                     <Link to={`/update-movie/${movie.movie_id}`}><button className="btn btn-outline-primary mx-2">Edit</button></Link>
+                                    <Link to={`/ticket/${movie.movie_id}`}><button className="btn btn-outline-success mx-2">Manage Ticket</button></Link>
                                     <button className="btn btn-outline-danger mx-2" onClick={() => deleteMovie(movie.movie_id)}>Delete</button>
                                 </td>
                             </tr>

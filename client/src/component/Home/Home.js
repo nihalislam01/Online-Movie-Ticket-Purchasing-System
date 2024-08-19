@@ -123,7 +123,7 @@ function Home(props) {
                                     <p>{movie.name}</p>
                                     {props.isHome && <button className="btn btn-outline-warning form-control mb-2" onClick={()=>addToWishlist(movie.movie_id)}>Add To Wishlist</button>}
                                     {!props.isHome && <button className="btn btn-outline-warning form-control mb-2" onClick={()=>removeWishlist(movie.movie_id)}>Remove From Wishlist</button>}
-                                    <button className="btn btn-warning form-control mb-2">Buy Ticket</button>
+                                    <Link to={`/buy-ticket/${movie.movie_id}`}><button className="btn btn-warning form-control mb-2">Buy Ticket</button></Link>
                                 </div>
                             )
                         )

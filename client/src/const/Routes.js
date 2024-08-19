@@ -4,6 +4,7 @@ import Login from "../component/Login/Login";
 import MovieForm from "../component/Movie/MovieForm";
 import ReviewForm from "../component/Review/ReviewForm";
 import Signup from "../component/Signup/Signup";
+import TicketForm from "../component/Ticket/TicketForm";
 
 export const routes = [
     {
@@ -29,6 +30,18 @@ export const routes = [
     {
         path: "/notification",
         element: <Dashboard currentPage={6} />
+    },
+    {
+        path: "/ticket/:id",
+        element: <Dashboard currentPage={7} />
+    },
+    {
+        path: "/buy-ticket/:id",
+        element: <Dashboard currentPage={8} />
+    },
+    {
+        path: "/add-ticket/:id",
+        element: <TicketForm />
     },
     {
         path: "/add-movie",

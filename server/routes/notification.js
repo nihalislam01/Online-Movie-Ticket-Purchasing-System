@@ -6,7 +6,7 @@ require('dotenv').config();
 
 router.get('/get/:id', authenticated.authenticated, (req, res)=>{
     const id = req.params.id;
-    var query = "select * from notification where user_id=?";
+    var query = "select * from notification where user_id=? order by notification_id desc";
     connection.query(query,[id],(err, results)=>{
         if(!err) {
             return res.status(200).json(results);

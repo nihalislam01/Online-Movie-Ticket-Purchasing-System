@@ -2,7 +2,7 @@ function FormInput(props) {
 
     return (
         <div className="mb-3">
-            { props.label && <label htmlFor={props.id} className="form-label">{props.label}</label> }
+            { props.label && <label htmlFor={props.id} className="form-label" style={{cursor: "pointer"}}>{props.label}</label> }
 
             <input className="form-control"
                    id={props.id}
@@ -11,7 +11,9 @@ function FormInput(props) {
                    placeholder={props.placeholder}
                    checked={props.checked}
                    value={props.value}
-                   onChange={props.onChange}/>
+                   onChange={props.onChange}
+                   style={{display : props.display===false && "none"}}
+                   />
         </div>
     );
 }

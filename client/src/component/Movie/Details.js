@@ -1,19 +1,34 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { errorMessage, serverLocation } from "../../const/Constants";
-import Review from "../Review/Review";
+import Buy from "../Ticket/Buy";
+import TicketInput from "../Ticket/TicketInput";
+import Info from "./Info";
 
 const movieUrl = `${serverLocation}/movie/get/`;
 const analyticsUrl = `${serverLocation}/review/get-analytics/`;
+const getScheduleIdUrl = `${serverLocation}/schedule/get-id`;
+const getTicketUrl = `${serverLocation}/ticket/get/`;
 
-function Details() {
+function Details(props) {
 
     let {id} = useParams();
+    const token = localStorage.getItem("token");
     const [movie, setMovie] = useState({});
     const [analytics, setAnalytics] = useState({});
     const [rating, setRating] = useState(0);
+    const [tickets, setTickets] = useState([]);
+    const [scheduleId, setScheduleId] = useState(0);
+
+    const [formValues, setFormValues] = useState({
+        branch: "",
+        hall: "",
+        date: "",
+        time: "",
+        movie_id: id
+    })
 
     const getMovie = (id) => {
         axios.get(movieUrl+id).then(response=>{
@@ -43,28 +58,52 @@ function Details() {
         getAnalytics(id);
     },[id])
 
+    const getSchedule = () => {
+        axios.post(getScheduleIdUrl, formValues, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then(response=>{
+            setScheduleId(response.data.schedule_id);
+            axios.get(getTicketUrl+response.data.schedule_id, {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            }).then(response=>{
+                setTickets(response.data);
+            }).catch(error=>{
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                }
+                toast.error(errorMessage);
+                console.log(error);
+            })
+        }).catch(error=>{
+            if (error.response.status===403) {
+                window.location.href = '/login';
+            }
+            toast.error(errorMessage);
+            console.log(error);
+        })
+    }
+
     return(
         <div className="container mt-4">
             <div className="row text-start">
                 <div className="col-md-4">
-                    <img src={movie.image_url} alt={movie.name} />
-                    <div className="d-flex">
-                        <h5>{movie.name}</h5>
-                        <p className="mx-4">{rating}({analytics.rate_count})</p>
+                    {props.isInfo && <img src={movie.image_url} alt={movie.name} />}
+                    <div className="d-flex mb-4">
+                        <h2>{movie.name}</h2>
+                        <h2 className="mx-4">{rating}({analytics.rate_count})</h2>
                     </div>
+                    {!props.isInfo && <TicketInput formValues={formValues} setFormValues={setFormValues}/>}
+                    {!props.isInfo && <button className="btn btn-secondary form-control my-4" onClick={getSchedule}>Check</button>}
                 </div>
                 <div className="col-md-8">
-                    <h5>Description</h5>
-                    <p>{movie.description}</p>
-                    <h5>Release Date</h5>
-                    <p>{movie.release_date}</p>
-                    <h5>Genre</h5>
-                    <p>{movie.genre}</p>
-                    <a href={movie.trailer_url}><button className="btn btn-danger mx-2">Watch Trailer</button></a>
-                    <Link to={`/review/${id}`}><button className="btn btn-warning mx-2">Write a review</button></Link>
-                    <h4 className="mt-4">Reviews</h4>
-                    <hr />
-                    <Review isMovie={true} id={id}/>
+                    {props.isInfo && <Info movie={movie} id={id} />}
+                    {!props.isInfo && <Buy tickets={tickets} scheduleId={scheduleId} />}
                 </div>
             </div>
         </div>
