@@ -16,7 +16,7 @@ const movieInputs = [
         id: "nameInput",
         name: "name",
         type: "text",
-        label: "name"
+        label: "Name"
     },
     {
         id: "releaseDateInput",
@@ -98,7 +98,7 @@ function MovieForm(props) {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);
@@ -120,7 +120,7 @@ function MovieForm(props) {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);

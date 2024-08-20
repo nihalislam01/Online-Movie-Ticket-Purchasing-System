@@ -27,7 +27,7 @@ function Movie() {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);
@@ -57,7 +57,7 @@ function Movie() {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);

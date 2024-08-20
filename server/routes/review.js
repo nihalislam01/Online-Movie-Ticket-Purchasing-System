@@ -11,7 +11,7 @@ router.post('/add', authenticated.authenticated, (req, res) =>{
     connection.query(query,[review.user_id, review.movie_id],(err, results)=>{
         if (!err) {
             if(results.length > 0) {
-                return res.status(400).json({error: "You have already reviewed this movie"});
+                return res.status(400).json({error: {errorMessage: "You have already reviewed this movie"}});
             } else {
                 var report = review.report;
                 if (report.trim().length === 0) {

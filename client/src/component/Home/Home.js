@@ -25,7 +25,7 @@ function Home(props) {
             setMovies(response.data);
         }).catch(error => {
             toast.error(errorMessage);
-            console.log(error)
+            console.log(error);
         })
     }
 
@@ -38,19 +38,15 @@ function Home(props) {
         }).then(response => {
             setMovies(response.data);
         }).catch(error => {
-            if (error.response.status===403) {
-                window.location.href = "/login";
-            } else {
-                try {
-                    if (error.response.status===403) {
-                        window.location.href = '/login';
-                    } else {
-                        toast.error(error.response.data.error);
-                    }
-                } catch {
-                    toast.error(errorMessage);
-                    console.log(error);
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
                 }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
         })
     }
@@ -88,11 +84,15 @@ function Home(props) {
         }).then(response=>{
             window.location.href = "/wishlist";
         }).catch(error=>{
-            if (error.response.status===403) {
-                window.location.href = "/login";
-            } else {
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
+                }
+            } catch {
                 toast.error(errorMessage);
-                console.log(error)
+                console.log(error);
             }
         })
     }
@@ -106,11 +106,15 @@ function Home(props) {
         }).then(response=>{
             window.location.href = "/wishlist";
         }).catch(error=>{
-            if (error.response.status===403) {
-                window.location.href = "/login";
-            } else {
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
+                }
+            } catch {
                 toast.error(errorMessage);
-                console.log(error)
+                console.log(error);
             }
         })
     }

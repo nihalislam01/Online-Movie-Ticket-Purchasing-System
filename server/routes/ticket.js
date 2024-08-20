@@ -2,7 +2,7 @@ const express = require('express');
 const connection = require('../connection');
 const authenticated = require('../service/authentication');
 const sendNotification = require('../service/notification');
-const setTicket = require('../service/ticket');
+const {setTicket} = require('../service/ticket');
 const router = express.Router();
 require('dotenv').config();
 
@@ -68,20 +68,20 @@ router.patch('/refund',authenticated.authenticated, (req, res)=>{
             const diffTime = currentDate - expiryDate;
             const diffDays = diffTime / (1000 * 60 * 60 * 24);
             if (diffDays > 3) {
-                return res.status(400).json({error: "You cannot make refund after 72 hours of buying ticket"});
+                return res.status(400).json({error: {errorMessage: "You cannot make refund after 72 hours of buying ticket"}});
             } else {
                 query = "update ticket set user_id=null, date=null, is_sold=0 where ticket_id=?";
                 connection.query(query,[body.id],(err, results)=>{
                     if(!err) {
                         if (diffDays>2) {
                             sendNotification(`You got 25% refund for ticket ${body.id} for refunding after 48 hours`, body.user_id);
-                            return res.status(200).json("You get 25% refund after 48 hours");
+                            return res.status(200).json("You get 25% refund");
                         } else if (diffDays<1) {
                             sendNotification(`You got 75% refund for ticket ${body.id} for refunding before 24 hours`, body.user_id);
-                            return res.status(200).json("You get 75% refund before 24 hours");
+                            return res.status(200).json("You get 75% refund");
                         } else {
                             sendNotification(`You got 50% refund for ticket ${body.id} for refunding after 24 hours`, body.user_id);
-                            return res.status(200).json("You get 50% refund after 24 hours");
+                            return res.status(200).json("You get 50% refund");
                         }
                     } else {
                         return res.status(500).json(err);

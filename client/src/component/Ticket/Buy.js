@@ -1,13 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { errorMessage, serverLocation } from "../../const/Constants";
 
 const updateTicketUrl = `${serverLocation}/ticket/update`;
 
-function Buy({tickets, scheduleId}) {
+function Buy({tickets, scheduleId, hasTicket}) {
 
-    const [hasTicket, setHasTicket] = useState(false);
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("id");
     const unavailableSeats = ['B3', 'B12', 'C3', 'C12', 'D1', 'D2', 'D3', 'D12', 'D13', 'D14', 'E1', 'E2', 'E3', 'E12', 'E13', 'E14'];
@@ -29,12 +28,6 @@ function Buy({tickets, scheduleId}) {
             price: 0
         }
     ])
-
-    useEffect(()=>{
-        if(tickets.length>0) {
-            setHasTicket(true);
-        }
-    },[tickets])
 
     const buy = (ticket) => {
         if (!ticket.is_sold) {
@@ -69,19 +62,15 @@ function Buy({tickets, scheduleId}) {
         }).then(response=>{
             toast.success(response.data);
         }).catch(error=>{
-            if (error.response.status===403) {
-                window.location.href = "/login";
-            } else {
-                try {
-                    if (error.response.status===403) {
-                        window.location.href = '/login';
-                    } else {
-                        toast.error(error.response.data.error);
-                    }
-                } catch {
-                    toast.error(errorMessage);
-                    console.log(error);
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
                 }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
         })
     }

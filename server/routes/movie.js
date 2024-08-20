@@ -61,9 +61,22 @@ router.patch('/update', authenticated.authenticated, (req, res) => {
     var query = "update movie set name=?, release_date=?, genre=?, image_url=?, trailer_url=?, is_available=?, description=? where movie_id=?";
     connection.query(query,[movie.name, movie.release_date, movie.genre, movie.image_url, movie.trailer_url, movie.is_available, movie.description, movie.movie_id], (err, results)=>{
         if(!err) {
-            const message = "You have just updated a movie";
-            sendNotification(message, movie.user_id);
-            return res.status(200).json(message);
+            if (!movie.is_available) {
+                query = "delete from wishlist where movie_id=?";
+                connection.query(query,[movie.movie_id], (err, results)=>{
+                    if (!err) {
+                        const message = "You have just updated a movie";
+                        sendNotification(message, movie.user_id);
+                        return res.status(200).json(message);
+                    } else {
+                        return res.status(500).json(err);
+                    }
+                })
+            } else {
+                const message = "You have just updated a movie";
+                sendNotification(message, movie.user_id);
+                return res.status(200).json(message);
+            }
         } else {
             return res.status(500).json(err);
         }
@@ -84,7 +97,7 @@ router.delete('/delete/:id', authenticated.authenticated, (req, res)=>{
                             const message = "You have just deleted a movie";
                             return res.status(200).json(message);
                         } else {
-                            return res.status(500).json(err);
+                            return res.status(400).json({error: {errorMessage: "Movie has already tickets"}});
                         }
                     })
                 } else {

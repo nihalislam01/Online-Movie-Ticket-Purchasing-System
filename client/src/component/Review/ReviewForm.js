@@ -39,22 +39,15 @@ function ReviewForm() {
         }).then(response=>{
             window.location.href = `/details/${id}`;
         }).catch(error=>{
-            if (error.response.status===403) {
-                window.location.href = "/login";
-            }
             try {
-                toast.error(error.response.data.error);
-            } catch{
-                try {
-                    if (error.response.status===403) {
-                        window.location.href = '/login';
-                    } else {
-                        toast.error(error.response.data.error);
-                    }
-                } catch {
-                    toast.error(errorMessage);
-                    console.log(error);
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
                 }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
         })
     }

@@ -78,7 +78,7 @@ function Details(props) {
                     if (error.response.status===403) {
                         window.location.href = '/login';
                     } else {
-                        toast.error(error.response.data.error);
+                        toast.error(error.response.data.error.errorMessage);
                     }
                 } catch {
                     toast.error(errorMessage);
@@ -90,7 +90,7 @@ function Details(props) {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);
@@ -113,7 +113,7 @@ function Details(props) {
                 </div>
                 <div className="col-md-8">
                     {props.isInfo && <Info movie={movie} id={id} />}
-                    {!props.isInfo && <Buy tickets={tickets} scheduleId={scheduleId} />}
+                    {!props.isInfo && <Buy tickets={tickets} scheduleId={scheduleId} hasTicket={tickets.length>0}/>}
                 </div>
             </div>
         </div>

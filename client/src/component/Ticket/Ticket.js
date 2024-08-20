@@ -29,7 +29,7 @@ function Ticket() {
                     if (error.response.status===403) {
                         window.location.href = '/login';
                     } else {
-                        toast.error(error.response.data.error);
+                        toast.error(error.response.data.error.errorMessage);
                     }
                 } catch {
                     toast.error(errorMessage);
@@ -50,18 +50,14 @@ function Ticket() {
             toast.success(response.data)
         }).catch(error=>{
             try {
-                toast.error(error.response.data.error)
-            }catch {
-                try {
-                    if (error.response.status===403) {
-                        window.location.href = '/login';
-                    } else {
-                        toast.error(error.response.data.error);
-                    }
-                } catch {
-                    toast.error(errorMessage);
-                    console.log(error);
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error.errorMessage);
                 }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
         })
     }

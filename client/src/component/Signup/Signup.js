@@ -68,13 +68,14 @@ function Signup() {
         axios.post(registrationUrl, {
             ...formValues
         }).then((response)=>{
-            if (response.status===200) {
-                toast.success(response.data);
-            } else if(response.status===409) {
-                toast.error("Try a different username");
-            }
+            toast.success(response.data);
         }).catch((error)=>{
-            toast.error(errorMessage);
+            try {
+                toast.error(error.response.data.error.errorMessage);
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
+            }
         })
     }
 

@@ -36,5 +36,7 @@ const setTicket = (schedule_id, user_id, tickets) => {
     return query;
 }
 
-module.exports = addTicket;
-module.exports = setTicket;
+module.exports = {
+    addTicket, 
+    setTicket
+};

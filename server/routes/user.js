@@ -20,7 +20,7 @@ router.post('/register', (req, res) => {
                         connection.query(query,[user.username],(err, results)=>{
                             if(!err){
                                 sendNotification('Welcome to Online Movie Ticket Purchasing System', results[0].user_id);
-                                return res.status(200).json("user signup successful");
+                                return res.status(200).json("Signup successful");
                             } else {
                                 return res.status(500).json(err);
                             }
@@ -31,7 +31,7 @@ router.post('/register', (req, res) => {
                 });
             }
             else {
-                return res.status(409).json({error: "Username already exists"});
+                return res.status(400).json({error: {errorMessage: "Username already exists"}});
             }
         } else {
             return res.status(500).json(err);
@@ -57,14 +57,14 @@ router.post('/authenticate', (req, res) => {
                             const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN,{expiresIn:'8h'});
                             return res.status(200).json({token: accessToken, role: results[0].role, id: results[0].user_id});
                         } else {
-                            return res.status(401).json({error: "Password did not match"})
+                            return res.status(400).json({error: {errorMessage: "Password did not match"}})
                         }
                     } else {
                         return res.status(500).json(err);
                     }
                 })
             } else {
-                return res.status(404).json({error: "Username does not exists"});
+                return res.status(400).json({error:{errorMessage:  "Username does not exists"}});
             }
         } else {
             return res.status(500).json(err);
@@ -94,7 +94,7 @@ router.patch("/update", authenticated.authenticated, (req, res)=>{
             return res.status(200).json(message);
         } else {
             if(err.code==="ER_DUP_ENTRY") {
-                return res.status(400).json({error: "Try a different username"});
+                return res.status(400).json({error: {errorMessage: "Try a different username"}});
             } else {
                 return res.status(500).json(err);
             }
@@ -122,7 +122,7 @@ router.patch("/change-password", authenticated.authenticated, (req, res)=>{
                             }
                         })
                     } else {
-                        return res.status(400).json({error: "Old Password did not match"});
+                        return res.status(400).json({error: {errorMessage: "Old Password did not match"}});
                     }
                 } else {
                     return res.status(500).json(err);

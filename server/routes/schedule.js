@@ -2,7 +2,7 @@ const express = require('express');
 const connection = require('../connection');
 const authenticated = require('../service/authentication');
 const sendNotification = require('../service/notification');
-const addTicket = require('../service/ticket');
+const {addTicket} = require('../service/ticket');
 const router = express.Router();
 require('dotenv').config();
 
@@ -12,7 +12,7 @@ router.post('/add', authenticated.authenticated, (req, res)=>{
     connection.query(query,[schedule.branch, schedule.hall, schedule.date, schedule.time],(err, results)=>{
         if(!err) {
             if(results.length > 0) {
-                return res.status(400).json({error: "Hall already booked"});
+                return res.status(400).json({error: {errorMessage: "Hall already booked"}});
             } else {
                 query = "insert into schedule(branch, hall, date, time, admin_user_id, movie_id) values(?,?,?,?,?,?)";
                 connection.query(query,[schedule.branch, schedule.hall, schedule.date, schedule.time, schedule.user_id, schedule.movie_id],(err, results)=>{
@@ -76,7 +76,7 @@ router.delete('/delete/:id', authenticated.authenticated, (req, res)=>{
     connection.query(query,[id],(err, results)=>{
         if (!err) {
             if(results.length > 0) {
-                return res.status(400).json({error: "Tickets already been sold"});
+                return res.status(400).json({error: {errorMessage: "Tickets already been sold"}});
             } else {
                 query = "delete from ticket where schedule_id=?";
                 connection.query(query,[id],(err, results)=>{

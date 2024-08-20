@@ -80,8 +80,6 @@ create table ticket(
     price int,
     user_id int,
     schedule_id int not null,
-    movie_id int,
     foreign key (user_id) references user(user_id),
-    foreign key (schedule_id) references schedule(schedule_id),
-    foreign key (movie_id) references movie(movie_id)
+    foreign key (schedule_id) references schedule(schedule_id)
 );

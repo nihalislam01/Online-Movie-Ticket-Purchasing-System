@@ -64,7 +64,7 @@ function Profile() {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);
@@ -90,6 +90,10 @@ function Profile() {
     }
 
     const handlePasswordChange = () => {
+        if (formValues.new_password!==formValues.match_password) {
+            toast.error("Password did not match");
+            return;
+        }
         axios.patch(changePasswordUrl, formValues, {
             headers: {
                 'content-type': 'application/json',
@@ -103,7 +107,7 @@ function Profile() {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);
@@ -132,7 +136,7 @@ function Profile() {
                 if (error.response.status===403) {
                     window.location.href = '/login';
                 } else {
-                    toast.error(error.response.data.error);
+                    toast.error(error.response.data.error.errorMessage);
                 }
             } catch {
                 toast.error(errorMessage);

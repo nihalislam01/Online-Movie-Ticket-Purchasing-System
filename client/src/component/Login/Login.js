@@ -53,7 +53,7 @@ function Login() {
             window.location.href = "/";
         }).catch((error)=>{
             try {
-                toast.error(error.response.data.error);
+                toast.error(error.response.data.error.errorMessage);
             } catch {
                 toast.error(errorMessage);
             }
