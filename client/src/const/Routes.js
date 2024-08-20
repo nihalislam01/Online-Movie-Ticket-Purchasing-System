@@ -1,4 +1,5 @@
 import React from "react";
+import BoughtTicket from "../component/BoughtTicket/BoughtTicket";
 import Dashboard from "../component/Dashboard/Dashboard";
 import Login from "../component/Login/Login";
 import MovieForm from "../component/Movie/MovieForm";
@@ -40,8 +41,20 @@ export const routes = [
         element: <Dashboard currentPage={8} />
     },
     {
+        path: "/my-ticket",
+        element: <Dashboard currentPage={9} />
+    },
+    {
         path: "/add-ticket/:id",
         element: <TicketForm />
+    },
+    {
+        path: "/pdf/:id",
+        element: <BoughtTicket isPDF={true}/>
+    },
+    {
+        path: "/refund/:id",
+        element: <BoughtTicket isPDF={false}/>
     },
     {
         path: "/add-movie",

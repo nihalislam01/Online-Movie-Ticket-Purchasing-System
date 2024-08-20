@@ -40,12 +40,15 @@ function TicketForm() {
             window.location.href = `/ticket/${id}`;
         }).catch(error=>{
             try {
-                toast.error(error.response.data.error);
-            } catch{
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
                 toast.error(errorMessage);
                 console.log(error);
             }
-            console.log(error);
         })
     }
 

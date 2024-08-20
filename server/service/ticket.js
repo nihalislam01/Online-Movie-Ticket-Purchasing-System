@@ -27,7 +27,7 @@ const addTicket = (schedule_id) => {
 }
 
 const setTicket = (schedule_id, user_id, tickets) => {
-    var query = `update ticket set is_sold=1, user_id=${user_id} where schedule_id=${schedule_id} and (seat_no='0'`;
+    var query = `update ticket set is_sold=1, user_id=${user_id}, date=? where schedule_id=${schedule_id} and (seat_no='0'`;
     tickets.forEach(seat=>{
         var temp = ` or seat_no='${seat}'`;
         query = query + temp;

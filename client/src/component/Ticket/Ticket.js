@@ -25,8 +25,16 @@ function Ticket() {
             }).then(response=>{
                 setSchedules(response.data);
             }).catch(error=>{
-                toast.error(errorMessage);
-                console.log(error);
+                try {
+                    if (error.response.status===403) {
+                        window.location.href = '/login';
+                    } else {
+                        toast.error(error.response.data.error);
+                    }
+                } catch {
+                    toast.error(errorMessage);
+                    console.log(error);
+                }
             })
         }
         getSchedule(id);
@@ -44,8 +52,16 @@ function Ticket() {
             try {
                 toast.error(error.response.data.error)
             }catch {
-                toast.error(errorMessage);
-                console.log(error);
+                try {
+                    if (error.response.status===403) {
+                        window.location.href = '/login';
+                    } else {
+                        toast.error(error.response.data.error);
+                    }
+                } catch {
+                    toast.error(errorMessage);
+                    console.log(error);
+                }
             }
         })
     }

@@ -72,8 +72,16 @@ function Buy({tickets, scheduleId}) {
             if (error.response.status===403) {
                 window.location.href = "/login";
             } else {
-                toast.error(errorMessage);
-                console.log(error);
+                try {
+                    if (error.response.status===403) {
+                        window.location.href = '/login';
+                    } else {
+                        toast.error(error.response.data.error);
+                    }
+                } catch {
+                    toast.error(errorMessage);
+                    console.log(error);
+                }
             }
         })
     }
@@ -83,9 +91,9 @@ function Buy({tickets, scheduleId}) {
             <Toaster />
             {!hasTicket && <h2 className="text-center m-4">Not Available</h2>}
             {[...Array(5)].map((_, index)=>(
-                <div className="d-flex justify-content-center" >
+                <div key={index} className="d-flex justify-content-center" >
                     {tickets.slice((index*14)+0, (index*14)+14).map((ticket, index)=>(
-                        unavailableSeats.includes(ticket.seat_no) ? (<div style={{width: "40px", height: "30px"}} className="m-2"></div>
+                        unavailableSeats.includes(ticket.seat_no) ? (<div key={index} style={{width: "40px", height: "30px"}} className="m-2"></div>
                         ) : (<button 
                             key={index} 
                             style={{width: "40px", height: "30px", 

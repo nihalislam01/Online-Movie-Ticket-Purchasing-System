@@ -60,8 +60,15 @@ function Profile() {
             setName(response.data.name);
             setUsername(response.data.username);
         }).catch(error=>{
-            if(error.status===401) {
-                window.location.href = '/login';
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
         })
     }
@@ -92,13 +99,15 @@ function Profile() {
             toast.success(response.data);
             setOpenPassword(false);
         }).catch(error=>{
-            if (error.status===401) {
-                window.location.href = "/login";
-            }
             try {
-                toast.error(error.response.data.error);
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
             } catch {
                 toast.error(errorMessage);
+                console.log(error);
             }
         })
     }
@@ -120,11 +129,15 @@ function Profile() {
             setOpenUpdate(false);
         }).catch(error=>{
             try {
-                toast.error(error.response.data.error)
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
             } catch {
-                toast.error(errorMessage)
+                toast.error(errorMessage);
+                console.log(error);
             }
-            console.log(error)
         })
     }
 

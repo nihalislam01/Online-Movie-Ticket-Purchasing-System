@@ -35,6 +35,9 @@ function Menu(props) {
                         <Link to="/wishlist" className={`${props.currentPage === Page.wishlist && (`selected`)}`}>Wishlist</Link>
                     </li>
                     <li className={`d-flex align-items-center mx-2`}>
+                        <Link to="/my-ticket" className={`${props.currentPage === Page.myTicket && (`selected`)}`}>My Ticket</Link>
+                    </li>
+                    <li className={`d-flex align-items-center mx-2`}>
                         <Link to="/notification" className={`${props.currentPage === Page.notification && (`selected`)}`}>Notification</Link>
                     </li>
                     <li className={`d-flex align-items-center mx-2`}>
@@ -67,7 +70,8 @@ export const Page = {
     wishlist: 5,
     notification: 6,
     ticket: 7,
-    buy: 8
+    buy: 8,
+    myTicket: 9
 };
 
 export default Menu;

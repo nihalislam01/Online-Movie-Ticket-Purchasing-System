@@ -74,18 +74,28 @@ function Details(props) {
             }).then(response=>{
                 setTickets(response.data);
             }).catch(error=>{
-                if (error.response.status===403) {
-                    window.location.href = '/login';
+                try {
+                    if (error.response.status===403) {
+                        window.location.href = '/login';
+                    } else {
+                        toast.error(error.response.data.error);
+                    }
+                } catch {
+                    toast.error(errorMessage);
+                    console.log(error);
                 }
-                toast.error(errorMessage);
-                console.log(error);
             })
         }).catch(error=>{
-            if (error.response.status===403) {
-                window.location.href = '/login';
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
             }
-            toast.error(errorMessage);
-            console.log(error);
         })
     }
 

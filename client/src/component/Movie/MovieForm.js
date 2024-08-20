@@ -94,8 +94,16 @@ function MovieForm(props) {
         }).then(response => {
             window.location.href = "/movie";
         }).catch(error => {
-            toast.error(errorMessage);
-            console.log(error)
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
+            }
         })
     }
 
@@ -108,8 +116,16 @@ function MovieForm(props) {
         }).then(response => {
             window.location.href = "/movie";
         }).catch(error => {
-            toast.error(errorMessage);
-            console.log(error)
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
+            }
         })
     }
 

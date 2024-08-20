@@ -45,8 +45,16 @@ function ReviewForm() {
             try {
                 toast.error(error.response.data.error);
             } catch{
-                toast.error(errorMessage);
-                console.log(error);
+                try {
+                    if (error.response.status===403) {
+                        window.location.href = '/login';
+                    } else {
+                        toast.error(error.response.data.error);
+                    }
+                } catch {
+                    toast.error(errorMessage);
+                    console.log(error);
+                }
             }
         })
     }

@@ -25,8 +25,16 @@ function Notification() {
         }).then(response=>{
             setNotifications(response.data);
         }).catch(error=>{
-            toast.error(errorMessage);
-            console.log(error)
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
+            }
         })
     }
 
@@ -43,8 +51,16 @@ function Notification() {
         }).then(response=>{
             toast.success(response.data);
         }).catch(error=>{
-            toast.error(errorMessage);
-            console.log(error);
+            try {
+                if (error.response.status===403) {
+                    window.location.href = '/login';
+                } else {
+                    toast.error(error.response.data.error);
+                }
+            } catch {
+                toast.error(errorMessage);
+                console.log(error);
+            }
         })
     }
 

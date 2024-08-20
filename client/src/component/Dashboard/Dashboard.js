@@ -6,6 +6,7 @@ import Details from "../Movie/Details";
 import Movie from "../Movie/Movie";
 import Notification from "../Notification/Notification";
 import Profile from "../Profile/Profile";
+import MyTicket from "../Ticket/MyTicket";
 import Ticket from "../Ticket/Ticket";
 
 function Dashboard(props) {
@@ -35,12 +36,13 @@ function Dashboard(props) {
                 </div>
                 {props.currentPage === Page.home && <Home isHome={true}/>}
                 {props.currentPage === Page.wishlist && <Home isHome={false}/>}
-                {props.currentPage === Page.profile && <Profile />}
                 {props.currentPage === Page.movie && <Movie />}
                 {props.currentPage === Page.details && <Details isInfo={true} />}
                 {props.currentPage === Page.buy && <Details isInfo={false} />}
                 {props.currentPage === Page.ticket && <Ticket />}
+                {props.currentPage === Page.myTicket && <MyTicket />}
                 {props.currentPage === Page.notification && <Notification />}
+                {props.currentPage === Page.profile && <Profile />}
             </section>
         </>
     )
