@@ -8,6 +8,7 @@ const reviewRoute = require('./routes/review');
 const notificationRoute = require('./routes/notification');
 const scheduleRoute = require('./routes/schedule');
 const ticketRoute = require('./routes/ticket');
+const paymentRoute = require('./routes/payment');
 const app = express();
 
 app.use(cors());
@@ -20,5 +21,6 @@ app.use('/review', reviewRoute);
 app.use('/notification', notificationRoute);
 app.use('/schedule', scheduleRoute);
 app.use('/ticket', ticketRoute);
+app.use('/payment', paymentRoute);
 
 module.exports = app;

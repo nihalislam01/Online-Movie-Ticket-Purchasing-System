@@ -1,33 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { errorMessage, serverLocation } from "../../const/Constants";
 
 const updateTicketUrl = `${serverLocation}/ticket/update`;
 
-function Buy({tickets, scheduleId, hasTicket}) {
+function Buy({tickets, scheduleId, hasTicket, selectTickets, quantity, setSelectTickets, setQuantity}) {
 
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("id");
     const unavailableSeats = ['B3', 'B12', 'C3', 'C12', 'D1', 'D2', 'D3', 'D12', 'D13', 'D14', 'E1', 'E2', 'E3', 'E12', 'E13', 'E14'];
-    const [selectTickets, setSelectTickets] = useState([]);
-    const [quantity, setQuantity] = useState([
-        {
-            type: 'Supreme',
-            quantity: 0,
-            price: 0
-        },
-        {
-            type: 'Premium',
-            quantity: 0,
-            price: 0
-        },
-        {
-            type: 'Regular',
-            quantity: 0,
-            price: 0
-        }
-    ])
 
     const buy = (ticket) => {
         if (!ticket.is_sold) {
@@ -54,13 +35,20 @@ function Buy({tickets, scheduleId, hasTicket}) {
     }
 
     const checkout = () => {
-        axios.patch(updateTicketUrl, {tickets: selectTickets, schedule_id: scheduleId, user_id: user_id}, {
+        axios.patch(updateTicketUrl, {tickets: selectTickets, amount: quantity.reduce((acc, item) => acc + item.price, 0), schedule_id: scheduleId, user_id: user_id}, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': 'Bearer ' + token,
             }
         }).then(response=>{
-            toast.success(response.data);
+            const toastId = toast.loading('Going through a payment gateway');
+
+            setTimeout(() => {
+            toast.success(response.data, {
+                id: toastId,
+            });
+            }, 4000);
+            
         }).catch(error=>{
             try {
                 if (error.response.status===403) {

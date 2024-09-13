@@ -4,11 +4,10 @@ import { toast, Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { errorMessage, serverLocation } from "../../const/Constants";
 import PDF from "../PDF/PDF";
-import Refund from "../Refund/Refund";
 
-const ticketsUrl = `${serverLocation}/ticket/get-by-schedule/`;
+const ticketsUrl = `${serverLocation}/ticket/get/`;
 
-function BoughtTicket(props) {
+function BoughtTicket() {
 
     const {id} = useParams();
     const user_id = localStorage.getItem("id");
@@ -40,8 +39,7 @@ function BoughtTicket(props) {
     return (
         <>
             <Toaster />
-            {props.isPDF && <PDF tickets={tickets}/>}
-            {!props.isPDF && <Refund tickets={tickets}/>}
+            {<PDF tickets={tickets}/>}
         </>
     )
 

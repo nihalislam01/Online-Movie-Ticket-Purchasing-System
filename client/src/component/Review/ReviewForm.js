@@ -14,19 +14,19 @@ function ReviewForm() {
     const user_id = localStorage.getItem("id");
     const token = localStorage.getItem("token");
     const [rating, setRating] = useState(0);
-    const [report, setReport] = useState("");
+    const [description, setDescription] = useState("");
 
     const onChangeHandler = (event) => {
       setRating(parseInt(event.target.value, 10));
     };
 
-    const reportChangeHandler = (event) => {
-        setReport(event.target.value);
+    const descriptionChangeHandler = (event) => {
+        setDescription(event.target.value);
     };
 
     const addReview = () => {
         const values = {
-            report: report,
+            description: description,
             rate: rating,
             user_id: user_id,
             movie_id: id
@@ -82,7 +82,7 @@ function ReviewForm() {
                         </label>
                     ))}
                 </div>
-                <textarea className="form-control" type="text" name="report" placeholder="Describe your opinion (Optional)" value={report} onChange={reportChangeHandler} />
+                <textarea className="form-control" type="text" name="report" placeholder="Describe your opinion (Optional)" value={description} onChange={descriptionChangeHandler} />
                 <button className="btn btn-success w-100 mt-2" onClick={addReview}>Submit</button>
                 <Link to="/"><button className="btn btn-secondary w-100 mt-2">Cancel</button></Link>
             </div>

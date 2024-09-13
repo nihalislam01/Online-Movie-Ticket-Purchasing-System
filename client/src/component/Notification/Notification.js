@@ -81,7 +81,7 @@ function Notification() {
                     <tbody>
                         {notifications.map((notification, index)=>(
                             <tr key={index}>
-                                <td className="text-start">{notification.report}</td>
+                                <td className="text-start">{notification.description}</td>
                                 <td className="d-flex justify-content-end">
                                     <p className="my-0 mx-2">{notification.date.substring(0, 10)}</p>
                                     <p className="my-0 mx-2 cancel" onClick={()=>deleteNotification(notification.notification_id)}>&times;</p>

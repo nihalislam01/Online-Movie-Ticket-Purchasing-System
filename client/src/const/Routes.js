@@ -50,11 +50,7 @@ export const routes = [
     },
     {
         path: "/pdf/:id",
-        element: <BoughtTicket isPDF={true}/>
-    },
-    {
-        path: "/refund/:id",
-        element: <BoughtTicket isPDF={false}/>
+        element: <BoughtTicket/>
     },
     {
         path: "/add-movie",

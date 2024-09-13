@@ -81,7 +81,7 @@ function Review(props) {
         <>
             {reviews.map((review, index)=> (
                 <div key={index} className="my-4">
-                    <div className={`review-header ${review.report !== null && (`not-rounded`)}`}>
+                    <div className={`review-header ${review.description !== null && (`not-rounded`)}`}>
                         {isMovie && <h5 className="m-0">{review.username}</h5>}
                         {!isMovie && <h5 className="m-0">{review.name}</h5>}
                         <div>
@@ -93,7 +93,7 @@ function Review(props) {
                     </div>
                     {review.report !== null && 
                         <div className="review-body container">
-                            <p>{review.report}</p>
+                            <p>{review.description}</p>
                         </div>
                     }
                 </div>

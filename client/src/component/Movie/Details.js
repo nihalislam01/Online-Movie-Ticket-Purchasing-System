@@ -10,7 +10,7 @@ import Info from "./Info";
 const movieUrl = `${serverLocation}/movie/get/`;
 const analyticsUrl = `${serverLocation}/review/get-analytics/`;
 const getScheduleIdUrl = `${serverLocation}/schedule/get-id`;
-const getTicketUrl = `${serverLocation}/ticket/get/`;
+const getTicketUrl = `${serverLocation}/ticket/get-all/`;
 
 function Details(props) {
 
@@ -21,6 +21,24 @@ function Details(props) {
     const [rating, setRating] = useState(0);
     const [tickets, setTickets] = useState([]);
     const [scheduleId, setScheduleId] = useState(0);
+    const [selectTickets, setSelectTickets] = useState([]);
+    const [quantity, setQuantity] = useState([
+        {
+            type: 'Supreme',
+            quantity: 0,
+            price: 0
+        },
+        {
+            type: 'Premium',
+            quantity: 0,
+            price: 0
+        },
+        {
+            type: 'Regular',
+            quantity: 0,
+            price: 0
+        }
+    ])
 
     const [formValues, setFormValues] = useState({
         branch: "",
@@ -59,6 +77,24 @@ function Details(props) {
     },[id])
 
     const getSchedule = () => {
+        setSelectTickets([]);
+        setQuantity([
+            {
+                type: 'Supreme',
+                quantity: 0,
+                price: 0
+            },
+            {
+                type: 'Premium',
+                quantity: 0,
+                price: 0
+            },
+            {
+                type: 'Regular',
+                quantity: 0,
+                price: 0
+            }
+        ])
         axios.post(getScheduleIdUrl, formValues, {
             headers: {
                 'content-type': 'application/json',
@@ -113,7 +149,7 @@ function Details(props) {
                 </div>
                 <div className="col-md-8">
                     {props.isInfo && <Info movie={movie} id={id} />}
-                    {!props.isInfo && <Buy tickets={tickets} scheduleId={scheduleId} hasTicket={tickets.length>0}/>}
+                    {!props.isInfo && <Buy tickets={tickets} scheduleId={scheduleId} hasTicket={tickets.length>0} selectTickets={selectTickets} quantity={quantity} setSelectTickets={setSelectTickets} setQuantity={setQuantity}/>}
                 </div>
             </div>
         </div>

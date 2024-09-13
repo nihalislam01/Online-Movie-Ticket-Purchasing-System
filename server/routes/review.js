@@ -13,12 +13,12 @@ router.post('/add', authenticated.authenticated, (req, res) =>{
             if(results.length > 0) {
                 return res.status(400).json({error: {errorMessage: "You have already reviewed this movie"}});
             } else {
-                var report = review.report;
-                if (report.trim().length === 0) {
-                    report = null
+                var description = review.description;
+                if (description.trim().length === 0) {
+                    description = null
                 }
-                query = "insert into review(report, rate, user_id, movie_id) values(?,?,?,?)";
-                connection.query(query,[report, review.rate, review.user_id, review.movie_id],(err, results)=>{
+                query = "insert into review(description, rate, user_id, movie_id) values(?,?,?,?)";
+                connection.query(query,[description, review.rate, review.user_id, review.movie_id],(err, results)=>{
                     if(!err) {
                         const message = "You have just reviewed a movie"
                         sendNotification(message, review.user_id);
@@ -36,7 +36,7 @@ router.post('/add', authenticated.authenticated, (req, res) =>{
 
 router.get("/get-by-movie/:id", (req, res)=>{
     const id = req.params.id;
-    var query = "select r.rate, r.report, u.username from review r inner join user u on r.user_id=u.user_id where r.movie_id=? order by r.review_id desc";
+    var query = "select r.rate, r.description, u.username from review r inner join user u on r.user_id=u.user_id where r.movie_id=? order by r.review_id desc";
     connection.query(query,[id],(err,results)=>{
         if(!err) {
             return res.status(200).json(results);
@@ -48,7 +48,7 @@ router.get("/get-by-movie/:id", (req, res)=>{
 
 router.get("/get-by-user/:id", authenticated.authenticated, (req, res)=>{
     const id = req.params.id;
-    var query = "select r.review_id, r.rate, r.report, m.name from review r inner join movie m on r.movie_id=m.movie_id where r.user_id=? order by r.review_id desc";
+    var query = "select r.review_id, r.rate, r.description, m.name from review r inner join movie m on r.movie_id=m.movie_id where r.user_id=? order by r.review_id desc";
     connection.query(query,[id],(err,results)=>{
         if(!err) {
             return res.status(200).json(results);

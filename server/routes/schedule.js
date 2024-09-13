@@ -21,7 +21,7 @@ router.post('/add', authenticated.authenticated, (req, res)=>{
                         connection.query(query,(err, results)=>{
                             if(!err) {
                                 const schedule_id = results[0].schedule_id;
-                                query = addTicket(schedule_id);
+                                query = addTicket(schedule_id, schedule.hall);
                                 connection.query(query,(err, results)=>{
                                     if(!err) {
                                         const message = "You have just added a new schedule and tickets";
@@ -72,12 +72,11 @@ router.post('/get-id', authenticated.authenticated, (req, res)=>{
 
 router.delete('/delete/:id', authenticated.authenticated, (req, res)=>{
     const id = req.params.id;
-    var query = "select ticket_id from ticket where schedule_id=? and is_sold=1";
+    var query = "select date from schedule where schedule_id=?";
     connection.query(query,[id],(err, results)=>{
-        if (!err) {
-            if(results.length > 0) {
-                return res.status(400).json({error: {errorMessage: "Tickets already been sold"}});
-            } else {
+        if(!err) {
+            const now = new Date();
+            if (now > results[0].date) {
                 query = "delete from ticket where schedule_id=?";
                 connection.query(query,[id],(err, results)=>{
                     if(!err) {
@@ -89,6 +88,33 @@ router.delete('/delete/:id', authenticated.authenticated, (req, res)=>{
                                 return res.status(500).json(err);
                             }
                         })
+                    } else {
+                        return res.status(500).json(err);
+                    }
+                })
+            } else {
+                query = "select ticket_id from ticket where schedule_id=? and is_sold=1";
+                connection.query(query,[id],(err, results)=>{
+                    if (!err) {
+                        if(results.length > 0) {
+                            return res.status(400).json({error: {errorMessage: "Tickets already been sold"}});
+                        } else {
+                            query = "delete from ticket where schedule_id=?";
+                            connection.query(query,[id],(err, results)=>{
+                                if(!err) {
+                                    query = "delete from schedule where schedule_id=?";
+                                    connection.query(query,[id],(err, results)=>{
+                                        if(!err) {
+                                            return res.status(200).json("Schedule deleted");
+                                        } else {
+                                            return res.status(500).json(err);
+                                        }
+                                    })
+                                } else {
+                                    return res.status(500).json(err);
+                                }
+                            })
+                        }
                     } else {
                         return res.status(500).json(err);
                     }

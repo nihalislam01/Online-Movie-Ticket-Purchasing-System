@@ -20,7 +20,7 @@ router.post('/add', authenticated.authenticated, (req, res) => {
 })
 
 router.get('/get-all', authenticated.authenticated, (req, res) => {
-    var query = "select * from movie";
+    var query = "select * from movie order by movie_id desc";
     connection.query(query, (err, results)=>{
         if(!err) {
             return res.status(200).json(results);
@@ -33,7 +33,7 @@ router.get('/get-all', authenticated.authenticated, (req, res) => {
 router.get('/get', (req, res) => {
     const search = req.query.search;
     const value = search;
-    var query = `select * from (select * from movie where is_available=1) T where T.name like '%${value}%' or T.release_date like '%${value}%' or T.description like '%${value}%' or T.genre like '%${value}%'`;
+    var query = `select * from (select * from movie where is_available=1) T where T.name like '%${value}%' or T.release_date like '%${value}%' or T.description like '%${value}%' or T.genre like '%${value}%' order by T.movie_id desc`;
     connection.query(query, (err, results)=>{
         if(!err) {
             return res.status(200).json(results);

@@ -42,7 +42,7 @@ create table wishlist(
 
 create table review(
     review_id int primary key AUTO_INCREMENT,
-    report varchar(500),
+    description varchar(500),
     rate int not null,
     user_id int not null,
     movie_id int not null,
@@ -53,11 +53,14 @@ create table review(
 
 create table notification(
     notification_id int primary key AUTO_INCREMENT,
-    report varchar(500),
+    description varchar(500),
     date date not null,
     user_id int not null,
     foreign key (user_id) references user(user_id)
 );
+
+insert into notification(description, date, user_id) values('Welcome to Online Movie Ticket Purchasing System', '2024-09-16', 1),
+('Welcome to Online Movie Ticket Purchasing System', '2024-09-16', 2);
 
 create table schedule(
     schedule_id int primary key AUTO_INCREMENT,
@@ -71,15 +74,22 @@ create table schedule(
     foreign key (movie_id) references movie(movie_id)
 );
 
+create table payment(
+    payment_id int primary key AUTO_INCREMENT,
+    date date,
+    amount int,
+    user_id int,
+    foreign key (user_id) references user(user_id)
+);
+
 create table ticket(
     ticket_id int primary key AUTO_INCREMENT,
     seat_no varchar(5),
     is_sold boolean,
-    date date,
     type varchar(20),
     price int,
-    user_id int,
+    payment_id int,
     schedule_id int not null,
-    foreign key (user_id) references user(user_id),
-    foreign key (schedule_id) references schedule(schedule_id)
+    foreign key (schedule_id) references schedule(schedule_id),
+    foreign key (payment_id) references payment(payment_id)
 );
